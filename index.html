@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BetShift - Apostar ou Investir?</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #070b09;
+            color: #e8f0ec;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           TELA DE LOGIN
+        ========================= */
+
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background:
+                radial-gradient(circle at top right, #103f2f 0%, transparent 35%),
+                radial-gradient(circle at bottom left, #0b2b21 0%, transparent 40%),
+                linear-gradient(135deg, #030504, #07100c, #020403);
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 430px;
+            background: rgba(11, 18, 15, 0.97);
+            border: 1px solid #1d3d31;
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 38px;
+            font-weight: 800;
+            color: #36b985;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #e7eee9;
+        }
+
+        .logo p {
+            color: #91a39b;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #e8f0ec;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #aebdb6;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 9px;
+            border: 1px solid #29453a;
+            background: #080f0c;
+            color: #e8f0ec;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #28a879;
+            box-shadow: 0 0 0 3px rgba(40, 168, 121, 0.12);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #0d6b4c, #159565);
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #11845d, #1baa74);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #315344;
+            color: #9fc0b2;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #10241b;
+            border-color: #3a745b;
+        }
+
+        .login-message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #ff8585;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 12px;
+            color: #65766f;
+        }
+
+        /* =========================
+           SISTEMA PRINCIPAL
+        ========================= */
+
+        .app {
+            display: none;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #050806;
+            border-bottom: 1px solid #183127;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #35b884;
+        }
+
+        .header-logo span {
+            color: #f0f5f2;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-name {
+            color: #b5c5be;
+            font-size: 14px;
+        }
+
+        .logout {
+            background: #111c17;
+            color: #8bb09f;
+            border: 1px solid #29483a;
+            padding: 8px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .logout:hover {
+            background: #173126;
+            color: white;
+        }
+
+        /* =========================
+           MENU
+        ========================= */
+
+        nav {
+            background: #0a100d;
+            border-bottom: 1px solid #162a21;
+            padding: 10px 20px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        nav button {
+            background: transparent;
+            color: #84968e;
+            border: 1px solid transparent;
+            padding: 10px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        nav button:hover {
+            background: #10241b;
+            color: #bde4d3;
+        }
+
+        nav button.active {
+            background: #123b2c;
+            border-color: #21664c;
+            color: #4bd39a;
+        }
+
+        /* =========================
+           CONTEÚDO
+        ========================= */
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 20px 50px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-title {
+            margin-bottom: 25px;
+        }
+
+        .section-title h2 {
+            color: #eef5f1;
+            margin-bottom: 7px;
+        }
+
+        .section-title p {
+            color: #84958e;
+        }
+
+        /* =========================
+           DASHBOARD
+        ========================= */
+
+        .welcome {
+            background:
+                linear-gradient(135deg, #0c261d, #08130f);
+            border: 1px solid #1c4936;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            color: #4bd39a;
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #a8b8b1;
+            line-height: 1.6;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: #0d1511;
+            border: 1px solid #1d3329;
+            border-radius: 13px;
+            padding: 22px;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            border-color: #2b634c;
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            color: #dce9e3;
+            margin-bottom: 9px;
+        }
+
+        .card p {
+            color: #82938b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .card-icon {
+            font-size: 30px;
+            margin-bottom: 13px;
+        }
+
+        /* =========================
+           FORMULÁRIOS
+        ========================= */
+
+        .simulator {
+            background: #0c1410;
+            border: 1px solid #1c352a;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .simulator h3 {
+            color: #4bd39a;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .form-grid .form-group {
+            margin-bottom: 0;
+        }
+
+        .calculate-btn {
+            margin-top: 20px;
+            max-width: 250px;
+        }
+
+        /* =========================
+           RESULTADOS
+        ========================= */
+
+        .result {
+            display: none;
+            margin-top: 25px;
+            background: #0a2118;
+            border: 1px solid #205a43;
+            border-radius: 13px;
+            padding: 22px;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result h3 {
+            color: #4bd39a;
+            margin-bottom: 18px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .result-item {
+            background: #0b1712;
+            border: 1px solid #1d3b2d;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .result-item span {
+            display: block;
+            color: #82958c;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .result-item strong {
+            font-size: 20px;
+            color: #e9f5ef;
+        }
+
+        .warning {
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 9px;
+            background: #261e0d;
+            border: 1px solid #5a4720;
+            color: #d8c38a;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .positive {
+            color: #4bd39a !important;
+        }
+
+        .negative {
+            color: #f18484 !important;
+        }
+
+        .investment-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: #123b2c;
+            border: 1px solid #21664c;
+            color: #6ee7b7;
+        }
+
+        .investment-badge.risk {
+            background: #321b1b;
+            border-color: #6b3030;
+            color: #ff9b9b;
+        }
+
+        .info-box {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 10px;
+            background: #0b1712;
+            border: 1px solid #29483a;
+            color: #9fb1a9;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .info-box strong {
+            color: #dce9e3;
+        }
+
+        .scenario-note {
+            margin-top: 12px;
+            color: #8fa199;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           EDUCAÇÃO
+        ========================= */
+
+        .education-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+        }
+
+        .education-card {
+            background: #0d1511;
+            border: 1px solid #1c3328;
+            border-radius: 13px;
+            padding: 22px;
+        }
+
+        .education-card h3 {
+            color: #45c58f;
+            margin-bottom: 10px;
+        }
+
+        .education-card p {
+            color: #94a49d;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* =========================
+           METAS
+        ========================= */
+
+        .goal-box {
+            background:
+                linear-gradient(135deg, #0c2018, #09100d);
+            border: 1px solid #1d4937;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .goal-box h3 {
+            color: #4bd39a;
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #53645c;
+            border-top: 1px solid #14251e;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           EDUCAÇÃO FINANCEIRA AVANÇADA
+        ========================= */
+
+        .education-intro {
+            background: linear-gradient(135deg, #0c261d, #09140f);
+            border: 1px solid #24513d;
+            border-radius: 15px;
+            padding: 24px;
+            margin-bottom: 22px;
+        }
+
+        .education-intro h3 {
+            color: #4bd39a;
+            margin-bottom: 10px;
+        }
+
+        .education-intro p {
+            color: #aabbb3;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .education-topic {
+            background: #0d1511;
+            border: 1px solid #1d352a;
+            border-radius: 14px;
+            padding: 23px;
+            margin-bottom: 18px;
+        }
+
+        .education-topic h3 {
+            color: #e2eee8;
+            margin-bottom: 11px;
+        }
+
+        .education-topic h4 {
+            color: #45c58f;
+            margin: 16px 0 7px;
+        }
+
+        .education-topic p,
+        .education-topic li {
+            color: #94a49d;
+            line-height: 1.65;
+            font-size: 14px;
+        }
+
+        .education-topic ul {
+            padding-left: 20px;
+        }
+
+        .education-compare {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin: 18px 0;
+        }
+
+        .education-compare > div {
+            background: #0b1712;
+            border: 1px solid #254437;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .education-compare h4 {
+            margin-top: 0;
+        }
+
+        .education-highlight {
+            margin-top: 16px;
+            padding: 15px;
+            border-left: 3px solid #36b985;
+            background: #0a2118;
+            color: #aabdb4;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .simulator-separator {
+            margin: 32px 0 18px;
+            border: 0;
+            border-top: 1px solid #1a3026;
+        }
+
+        /* =========================
+           RESPONSIVO
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 13px 15px;
+            }
+
+            .header-logo {
+                font-size: 21px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            main {
+                padding: 22px 14px 40px;
+            }
+
+            .login-box {
+                padding: 28px 22px;
+            }
+
+            .logo h1 {
+                font-size: 32px;
+            }
+
+            .welcome {
+                padding: 22px;
+            }
+
+            .simulator {
+                padding: 20px;
+            }
+
+            .calculate-btn {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         LOGIN / CADASTRO
+    ========================= -->
+
+    <div class="login-screen" id="loginScreen">
+
+        <div class="login-box">
+
+            <div class="logo">
+                <h1>Bet<span>Shift</span></h1>
+                <p>Aposte menos. Pense mais. Invista melhor.</p>
+            </div>
+
+            <!-- LOGIN -->
+
+            <div id="loginForm">
+
+                <h2>Entrar</h2>
+
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Digite seu e-mail"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input
+                        type="password"
+                        id="loginSenha"
+                        placeholder="Digite sua senha"
+                    >
+                </div>
+
+                <button class="btn" onclick="fazerLogin()">
+                    Entrar no BetShift
+                </button>
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="mostrarCadastro()"
+                >
+                    Criar uma conta
+                </button>
+
+                <div class="login-message" id="loginMessage"></div>
+
+            </div>
+
+            <!-- CADASTRO -->
+
+            <div id="cadastroForm" style="display:none;">
+
+                <h2>Criar conta</h2>
+
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input
+                        type="text"
+                        id="cadastroNome"
+                        placeholder="Digite seu nome"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input
+                        type="email"
+                        id="cadastroEmail"
+                        placeholder="Digite seu e-mail"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input
+                        type="password"
+                        id="cadastroSenha"
+                        placeholder="Crie uma senha"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Perfil</label>
+
+                    <select id="cadastroPerfil">
+                        <option value="Estudante">
+                            Estudante
+                        </option>
+
+                        <option value="Profissional">
+                            Profissional
+                        </option>
+
+                        <option value="Empreendedor">
+                            Empreendedor
+                        </option>
+
+                        <option value="Outro">
+                            Outro
+                        </option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="fazerCadastro()">
+                    Criar conta
+                </button>
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="mostrarLogin()"
+                >
+                    Voltar para login
+                </button>
+
+                <div class="login-message" id="cadastroMessage"></div>
+
+            </div>
+
+            <div class="login-footer">
+                Projeto Integrador - Ciências Contábeis
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         SISTEMA
+    ========================= -->
+
+    <div class="app" id="app">
+
+        <header>
+
+            <div class="header-logo">
+                Bet<span>Shift</span>
+            </div>
+
+            <div class="user-area">
+
+                <span class="user-name" id="userName">
+                    Usuário
+                </span>
+
+                <button class="logout" onclick="sair()">
+                    Sair
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- MENU -->
+
+        <nav>
+
+            <button class="active" onclick="abrirSecao('dashboard', this)">
+                🏠 Início
+            </button>
+
+            <button onclick="abrirSecao('educacao', this)">
+                📚 Educação Financeira
+            </button>
+
+            <button onclick="abrirSecao('apostas', this)">
+                🎲 Simulador de Apostas
+            </button>
+
+            <button onclick="abrirSecao('rendaFixa', this)">
+                🛡️ Simulador — Renda Fixa
+            </button>
+
+            <button onclick="abrirSecao('rendaVariavel', this)">
+                📊 Simulador — Renda Variável
+            </button>
+
+            <button onclick="abrirSecao('comparador', this)">
+                ⚖️ Apostar ou Investir
+            </button>
+
+            <button onclick="abrirSecao('metas', this)">
+                🎯 Metas Financeiras
+            </button>
+
+        </nav>
+
+
+        <main>
+
+            <!-- =========================
+                 DASHBOARD
+            ========================= -->
+
+            <section
+                class="section active"
+                id="dashboard"
+            >
+
+                <div class="welcome">
+
+                    <h2>Bem-vindo ao BetShift!</h2>
+
+                    <p>
+                        O BetShift é uma ferramenta de educação
+                        financeira criada para mostrar, de forma
+                        prática, a diferença entre utilizar dinheiro
+                        em apostas e direcionar esse mesmo valor
+                        para investimentos.
+                    </p>
+
+                </div>
+
+
+                <div class="cards">
+
+                    <div
+                        class="card"
+                        onclick="abrirSecao('apostas')"
+                    >
+
+                        <div class="card-icon">
+                            🎲
+                        </div>
+
+                        <h3>Simulador de Apostas</h3>
+
+                        <p>
+                            Descubra quanto dinheiro pode ser
+                            utilizado em apostas ao longo do tempo.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="card"
+                        onclick="abrirSecao('rendaFixa')"
+                    >
+
+                        <div class="card-icon">
+                            📈
+                        </div>
+
+                        <h3>Simuladores de Investimentos</h3>
+
+                        <p>
+                            Primeiro entenda os investimentos na área de Educação Financeira.
+                            Depois, simule separadamente renda fixa e renda variável.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="card"
+                        onclick="abrirSecao('comparador')"
+                    >
+
+                        <div class="card-icon">
+                            ⚖️
+                        </div>
+
+                        <h3>Apostar ou Investir?</h3>
+
+                        <p>
+                            Compare o dinheiro utilizado em apostas
+                            com uma possível estratégia de investimento.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="card"
+                        onclick="abrirSecao('educacao')"
+                    >
+
+                        <div class="card-icon">
+                            📚
+                        </div>
+
+                        <h3>Educação Financeira</h3>
+
+                        <p>
+                            Aprenda conceitos importantes sobre
+                            investimentos e finanças.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="card"
+                        onclick="abrirSecao('metas')"
+                    >
+
+                        <div class="card-icon">
+                            🎯
+                        </div>
+
+                        <h3>Metas Financeiras</h3>
+
+                        <p>
+                            Descubra quanto você precisa guardar
+                            mensalmente para atingir seus objetivos.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="section" id="educacao">
+
+                <div class="section-title">
+                    <h2>📚 Educação Financeira</h2>
+                    <p>Entenda como os investimentos funcionam antes de fazer qualquer simulação.</p>
+                </div>
+
+                <div class="education-intro">
+                    <h3>Antes de investir, entenda onde seu dinheiro está indo</h3>
+                    <p>
+                        Investir não significa simplesmente colocar dinheiro em qualquer aplicação e esperar que ele aumente.
+                        Cada investimento possui regras próprias, prazo, liquidez, forma de remuneração, tributação e nível de risco.
+                        O objetivo desta seção é apresentar esses conceitos de forma simples para que a simulação faça sentido.
+                    </p>
+                </div>
+
+                <div class="education-topic">
+                    <h3>🔎 O que é investir?</h3>
+                    <p>
+                        Investir é direcionar dinheiro para um ativo ou aplicação com a expectativa de obter algum retorno no futuro.
+                        Esse retorno pode vir de juros, valorização do preço, dividendos, rendimentos ou uma combinação desses fatores.
+                        Diferentemente de uma aposta, o investimento deve ser analisado a partir de suas características, riscos, prazo e condições.
+                    </p>
+                    <div class="education-highlight">
+                        <strong>Importante:</strong> todo investimento envolve algum tipo de risco. O que muda é a natureza e o tamanho desse risco.
+                        Renda fixa tende a oferecer maior previsibilidade quando há uma taxa contratada; renda variável pode oscilar significativamente.
+                    </div>
+                </div>
+
+                <div class="education-topic">
+                    <h3>⚖️ Diferença entre Renda Fixa e Renda Variável</h3>
+                    <div class="education-compare">
+                        <div>
+                            <h4>🛡️ Renda Fixa</h4>
+                            <ul>
+                                <li>A remuneração segue uma regra conhecida no momento da aplicação.</li>
+                                <li>Pode ser prefixada ou ligada a um indicador.</li>
+                                <li>Em produtos prefixados, a taxa contratada permite projetar o retorno bruto até o vencimento.</li>
+                                <li>Alguns produtos podem contar com cobertura do FGC, desde que sejam elegíveis.</li>
+                                <li>Continua existindo risco: crédito, liquidez e, em determinados títulos, oscilação de preço antes do vencimento.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>📊 Renda Variável</h4>
+                            <ul>
+                                <li>O preço e o retorno não são conhecidos antecipadamente.</li>
+                                <li>O valor pode subir ou cair durante o período.</li>
+                                <li>É possível terminar com valor inferior ao dinheiro investido.</li>
+                                <li>Não existe promessa de rentabilidade mensal.</li>
+                                <li>O resultado depende das condições do mercado e do próprio ativo.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p>
+                        <strong>Exemplo:</strong> um CDB prefixado com taxa contratada permite calcular uma projeção com base naquela taxa e no prazo.
+                        Já uma ação pode valer mais ou menos no momento em que você decidir vender.
+                    </p>
+                </div>
+
+                <div class="education-topic">
+                    <h3>💰 CDB — Certificado de Depósito Bancário</h3>
+                    <p>
+                        O CDB é um título emitido por instituições financeiras. Na prática, o investidor aplica recursos e recebe uma remuneração conforme as condições contratadas.
+                        Existem CDBs prefixados, pós-fixados e híbridos. No prefixado, a taxa é conhecida na contratação; no pós-fixado, o retorno depende de um indicador, como o CDI.
+                    </p>
+                    <h4>Tributação</h4>
+                    <p>Para pessoa física, o rendimento de renda fixa em geral segue IR regressivo: 22,5% até 180 dias; 20% de 181 a 360 dias; 17,5% de 361 a 720 dias; e 15% acima de 720 dias.</p>
+                    <h4>Proteção</h4>
+                    <p>CDBs elegíveis podem contar com cobertura do FGC dentro dos limites aplicáveis. Isso não significa que todo produto ou qualquer valor esteja integralmente protegido.</p>
+                </div>
+
+                <div class="education-topic">
+                    <h3>🏠 LCI e LCA</h3>
+                    <p>
+                        LCI é a Letra de Crédito Imobiliário e LCA é a Letra de Crédito do Agronegócio. São títulos de renda fixa emitidos por instituições financeiras e possuem regras próprias de prazo e liquidez.
+                    </p>
+                    <h4>Tributação</h4>
+                    <p>Para pessoa física, a simulação considera os rendimentos de LCI/LCA como isentos de IR, conforme as regras aplicáveis ao produto.</p>
+                    <h4>Proteção</h4>
+                    <p>Quando elegíveis, LCI e LCA podem ter cobertura do FGC dentro dos limites estabelecidos.</p>
+                </div>
+
+                <div class="education-topic">
+                    <h3>🏛️ Tesouro Direto</h3>
+                    <p>
+                        O Tesouro Direto permite ao investidor comprar títulos públicos federais. Existem diferentes tipos de títulos, com características de remuneração e prazo distintas.
+                        Em títulos prefixados, por exemplo, a taxa contratada é conhecida no momento da compra, mas uma venda antes do vencimento pode sofrer oscilação de preço.
+                    </p>
+                    <h4>Tributação</h4>
+                    <p>O rendimento está sujeito ao IR regressivo da renda fixa. Pode haver IOF em resgates realizados nos primeiros 29 dias, conforme as regras aplicáveis.</p>
+                    <div class="education-highlight">
+                        <strong>Atenção:</strong> "taxa contratada" não significa que o valor de mercado permanecerá igual durante todo o caminho.
+                        A oscilação é especialmente importante quando o investidor vende determinados títulos antes do vencimento.
+                    </div>
+                </div>
+
+                <div class="education-topic">
+                    <h3>🏢 Fundos Imobiliários — FIIs</h3>
+                    <p>
+                        FIIs são fundos que investem em ativos ligados ao mercado imobiliário. O investidor compra cotas negociadas no mercado e pode receber rendimentos distribuídos pelo fundo, além de obter ganho ou perda com a variação do preço da cota.
+                    </p>
+                    <h4>Por que é renda variável?</h4>
+                    <p>O preço da cota oscila. Portanto, não existe garantia de que ela irá subir, nem de que haverá um determinado rendimento mensal. Vacância, juros, qualidade dos ativos, mercado imobiliário e expectativas dos investidores podem afetar o resultado.</p>
+                </div>
+
+                <div class="education-topic">
+                    <h3>📈 Ações</h3>
+                    <p>
+                        Ao comprar uma ação, o investidor adquire uma participação em uma empresa. O retorno pode ocorrer pela valorização da ação e, quando houver distribuição, por proventos.
+                    </p>
+                    <h4>O principal risco</h4>
+                    <p>O preço das ações pode variar diariamente. Resultados da empresa, cenário econômico, juros, notícias, expectativas e condições do mercado podem provocar altas ou quedas. Não existe retorno mensal garantido.</p>
+                    <h4>Tributação</h4>
+                    <p>As regras tributárias dependem do tipo de operação. Operações comuns em bolsa e day trade possuem alíquotas distintas e existem regras específicas para compensação e eventual isenção em determinadas situações.</p>
+                </div>
+
+                <div class="education-topic">
+                    <h3>₿ Bitcoin e Criptoativos</h3>
+                    <p>
+                        Bitcoin é um criptoativo com elevada volatilidade. Seu preço pode subir ou cair de forma muito rápida, inclusive em grandes proporções.
+                        Por isso, não faz sentido tratá-lo no simulador como se tivesse uma taxa mensal garantida.
+                    </p>
+                    <div class="education-highlight">
+                        <strong>Exemplo:</strong> se um ativo cair 40%, o investidor não "perde apenas parte do rendimento" — o próprio capital investido passa a valer menos.
+                        Uma recuperação de uma queda também exige uma alta proporcionalmente maior para voltar ao ponto inicial.
+                    </div>
+                </div>
+
+                <div class="education-topic">
+                    <h3>⏱️ Liquidez, prazo e vencimento</h3>
+                    <p>
+                        Liquidez é a facilidade de transformar um investimento em dinheiro disponível. Um investimento pode ter boa rentabilidade e, ainda assim, não ser adequado para uma pessoa que precisa do dinheiro rapidamente.
+                    </p>
+                    <ul>
+                        <li><strong>Liquidez diária:</strong> permite resgate com maior facilidade, conforme as condições do produto.</li>
+                        <li><strong>Prazo de vencimento:</strong> data ou período em que o investimento chega às condições finais previstas.</li>
+                        <li><strong>Venda antecipada:</strong> pode alterar o resultado e, em alguns investimentos, gerar perda.</li>
+                    </ul>
+                </div>
+
+                <div class="education-topic">
+                    <h3>🧾 Impostos: por que olhar o valor líquido?</h3>
+                    <p>
+                        Comparar somente a rentabilidade bruta pode dar uma visão incompleta. Dependendo do investimento, parte do rendimento pode ser destinada ao imposto.
+                        Por isso, os simuladores do BetShift mostram, quando aplicável, uma estimativa de impostos e o resultado líquido.
+                    </p>
+                    <div class="education-highlight">
+                        O que importa para o investidor é o resultado que efetivamente permanece com ele, considerando as regras do produto, impostos e demais custos aplicáveis.
+                    </div>
+                </div>
+
+                <div class="education-topic">
+                    <h3>🛡️ O que é o FGC?</h3>
+                    <p>
+                        O Fundo Garantidor de Créditos oferece proteção a determinados produtos financeiros elegíveis, observados os limites e condições estabelecidos. A cobertura ordinária é de até R$ 250 mil por CPF/CNPJ por instituição ou conglomerado, respeitado também o limite global aplicável por período.
+                    </p>
+                    <p>
+                        O FGC não cobre ações, FIIs ou Bitcoin. Portanto, não se deve usar a existência do FGC como sinônimo de "todo investimento é garantido".
+                    </p>
+                </div>
+
+                <div class="education-topic">
+                    <h3>🎯 Risco x Retorno</h3>
+                    <p>
+                        Em geral, buscar retornos maiores significa aceitar algum nível adicional de incerteza. Isso não significa que assumir mais risco sempre produz mais retorno.
+                        Significa que o investidor precisa entender quanto pode perder e se está preparado para essa oscilação.
+                    </p>
+                    <h4>Diversificação</h4>
+                    <p>Distribuir recursos entre diferentes investimentos pode reduzir a dependência de um único ativo ou mercado. Diversificar, porém, não elimina o risco.</p>
+                </div>
+
+                <div class="education-topic">
+                    <h3>🧠 Como usar os simuladores do BetShift</h3>
+                    <ul>
+                        <li>Leia primeiro as características do investimento.</li>
+                        <li>Na renda fixa, observe taxa, prazo, tributação e condições de resgate.</li>
+                        <li>Na renda variável, teste os cenários pessimista, base e otimista.</li>
+                        <li>Observe se o resultado final ficou acima ou abaixo do total aportado.</li>
+                        <li>Use a simulação como ferramenta educativa, não como promessa de resultado futuro.</li>
+                    </ul>
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 SIMULADOR DE APOSTAS
+            ========================= -->
+
+            <section
+                class="section"
+                id="apostas"
+            >
+
+                <div class="section-title">
+
+                    <h2>🎲 Simulador de Apostas</h2>
+
+                    <p>
+                        Veja quanto você pode gastar ao longo do tempo
+                        realizando apostas regularmente.
+                    </p>
+
+                </div>
+
+
+                <div class="simulator">
+
+                    <h3>Configure sua simulação</h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Valor médio por aposta (R$)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="valorAposta"
+                                placeholder="Ex: 20"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Quantidade de apostas por mês
+                            </label>
+
+                            <input
+                                type="number"
+                                id="qtdApostas"
+                                placeholder="Ex: 10"
+                                min="0"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Período
+                            </label>
+
+                            <select id="periodoAposta">
+
+                                <option value="6">
+                                    6 meses
+                                </option>
+
+                                <option value="12">
+                                    1 ano
+                                </option>
+
+                                <option value="60">
+                                    5 anos
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="btn calculate-btn"
+                        onclick="calcularApostas()"
+                    >
+                        Calcular
+                    </button>
+
+
+                    <div
+                        class="result"
+                        id="resultadoAposta"
+                    >
+
+                        <h3>Resultado da simulação</h3>
+
+                        <div class="result-grid">
+
+                            <div class="result-item">
+
+                                <span>
+                                    Gasto mensal
+                                </span>
+
+                                <strong id="gastoMensal">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="result-item">
+
+                                <span>
+                                    Gasto total
+                                </span>
+
+                                <strong id="gastoTotal">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="warning">
+
+                            ⚠️ As apostas possuem risco e
+                            resultados imprevisíveis. O valor
+                            apresentado representa apenas o dinheiro
+                            utilizado nas apostas, não sendo uma
+                            previsão de ganhos ou perdas.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 INVESTIMENTOS
+            ========================= -->
+
+                        <section class="section" id="rendaFixa">
+                <div class="section-title">
+                    <h2>🛡️ Simulador de Investimentos — Renda Fixa</h2>
+                    <p>Simule investimentos com taxa contratada e veja o impacto do prazo e da tributação.</p>
+                </div>
+
+                <div class="simulator">
+                    <span class="investment-badge">RENDA FIXA • MAIOR PREVISIBILIDADE</span>
+                    <h3>Configure sua aplicação</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Aporte mensal (R$)</label>
+                            <input type="number" id="aporteFixa" placeholder="Ex: 300" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Período</label>
+                            <select id="periodoFixa">
+                                <option value="6">6 meses</option>
+                                <option value="12">1 ano</option>
+                                <option value="36">3 anos</option>
+                                <option value="60" selected>5 anos</option>
+                                <option value="120">10 anos</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Investimento</label>
+                            <select id="tipoFixa" onchange="atualizarFixa()">
+                                <option value="cdb">CDB Prefixado — 12% a.a.</option>
+                                <option value="lci">LCI / LCA Prefixada — 10,5% a.a.</option>
+                                <option value="tesouro">Tesouro Prefixado — 12% a.a.</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="info-box" id="infoFixa"></div>
+                    <button class="btn calculate-btn" onclick="calcularRendaFixa()">Calcular renda fixa</button>
+                    <div class="result" id="resultadoFixa">
+                        <h3>Resultado da simulação</h3>
+                        <div class="result-grid">
+                            <div class="result-item"><span>Total investido</span><strong id="fixaInvestido">R$ 0,00</strong></div>
+                            <div class="result-item"><span>Valor bruto projetado</span><strong id="fixaBruto">R$ 0,00</strong></div>
+                            <div class="result-item"><span>Impostos estimados</span><strong id="fixaImpostos">R$ 0,00</strong></div>
+                            <div class="result-item"><span>Valor líquido projetado</span><strong id="fixaLiquido">R$ 0,00</strong></div>
+                            <div class="result-item"><span>Resultado líquido</span><strong id="fixaResultado" class="positive">R$ 0,00</strong></div>
+                        </div>
+                        <div class="warning" id="avisoFixa"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="rendaVariavel">
+                <div class="section-title">
+                    <h2>📊 Simulador de Investimentos — Renda Variável</h2>
+                    <p>Aqui o retorno é imprevisível. Teste diferentes cenários e veja como ganhos e perdas alteram o resultado.</p>
+                </div>
+
+                <div class="simulator">
+                    <span class="investment-badge risk">RENDA VARIÁVEL • RETORNO IMPREVISÍVEL</span>
+                    <h3>Configure seu cenário</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Aporte mensal (R$)</label>
+                            <input type="number" id="aporteVariavel" placeholder="Ex: 300" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>Período</label>
+                            <select id="periodoVariavel">
+                                <option value="6">6 meses</option>
+                                <option value="12">1 ano</option>
+                                <option value="36">3 anos</option>
+                                <option value="60" selected>5 anos</option>
+                                <option value="120">10 anos</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Investimento</label>
+                            <select id="tipoVariavel" onchange="atualizarVariavel()">
+                                <option value="fii">Fundos Imobiliários — FIIs</option>
+                                <option value="acoes">Ações</option>
+                                <option value="bitcoin">Bitcoin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Cenário</label>
+                            <select id="cenarioVariavel">
+                                <option value="pessimista">Pessimista</option>
+                                <option value="base" selected>Base</option>
+                                <option value="otimista">Otimista</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="info-box" id="infoVariavel"></div>
+                    <div class="scenario-note">Os percentuais são hipóteses educativas para demonstrar a imprevisibilidade da renda variável. Não são promessa, previsão ou recomendação de rentabilidade.</div>
+                    <button class="btn calculate-btn" onclick="calcularRendaVariavel()">Calcular cenário</button>
+                    <div class="result" id="resultadoVariavel">
+                        <h3>Resultado do cenário</h3>
+                        <div class="result-grid">
+                            <div class="result-item"><span>Total investido</span><strong id="variavelInvestido">R$ 0,00</strong></div>
+                            <div class="result-item"><span>Valor projetado</span><strong id="variavelValor">R$ 0,00</strong></div>
+                            <div class="result-item"><span>Resultado</span><strong id="variavelResultado">R$ 0,00</strong></div>
+                        </div>
+                        <div class="warning" id="avisoVariavel"></div>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <!-- =========================
+                 COMPARADOR
+            ========================= -->
+
+            <section
+                class="section"
+                id="comparador"
+            >
+
+                <div class="section-title">
+
+                    <h2>⚖️ Apostar ou Investir?</h2>
+
+                    <p>
+                        Compare o dinheiro utilizado em apostas com
+                        uma possível estratégia de investimento.
+                    </p>
+
+                </div>
+
+
+                <div class="simulator">
+
+                    <h3>Faça sua comparação</h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Valor mensal disponível (R$)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="valorComparacao"
+                                placeholder="Ex: 200"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Período
+                            </label>
+
+                            <select id="periodoComparacao">
+
+                                <option value="12">
+                                    1 ano
+                                </option>
+
+                                <option value="36">
+                                    3 anos
+                                </option>
+
+                                <option value="60">
+                                    5 anos
+                                </option>
+
+                                <option value="120">
+                                    10 anos
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Investimento para comparação
+                            </label>
+
+                            <select id="tipoComparacao">
+
+                                <option value="0.006">
+                                    Poupança
+                                </option>
+
+                                <option value="0.008">
+                                    Tesouro Selic
+                                </option>
+
+                                <option value="0.009">
+                                    CDB
+                                </option>
+
+                                <option value="0.0085">
+                                    LCI / LCA
+                                </option>
+
+                                <option value="0.010">
+                                    FII
+                                </option>
+
+                                <option value="0.012">
+                                    Ações
+                                </option>
+
+                                <option value="0.018">
+                                    Bitcoin
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="btn calculate-btn"
+                        onclick="comparar()"
+                    >
+                        Comparar
+                    </button>
+
+
+                    <div
+                        class="result"
+                        id="resultadoComparacao"
+                    >
+
+                        <h3>
+                            Resultado da comparação
+                        </h3>
+
+                        <div class="result-grid">
+
+                            <div class="result-item">
+
+                                <span>
+                                    Total destinado às apostas
+                                </span>
+
+                                <strong id="totalApostasComparacao">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="result-item">
+
+                                <span>
+                                    Valor estimado investido
+                                </span>
+
+                                <strong
+                                    id="totalInvestimentoComparacao"
+                                    class="positive"
+                                >
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="result-item">
+
+                                <span>
+                                    Diferença estimada
+                                </span>
+
+                                <strong
+                                    id="diferencaComparacao"
+                                    class="positive"
+                                >
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="warning">
+
+                            💡 A comparação demonstra o potencial
+                            efeito dos juros compostos. Investimentos
+                            também possuem riscos e rentabilidades
+                            variáveis.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 EDUCAÇÃO FINANCEIRA
+            ========================= -->
+
+                        
+
+
+
+            <!-- =========================
+                 METAS FINANCEIRAS
+            ========================= -->
+
+            <section
+                class="section"
+                id="metas"
+            >
+
+                <div class="section-title">
+
+                    <h2>🎯 Metas Financeiras</h2>
+
+                    <p>
+                        Descubra quanto você precisa guardar mensalmente
+                        para alcançar um objetivo.
+                    </p>
+
+                </div>
+
+
+                <div class="goal-box">
+
+                    <h3>
+                        Defina sua meta
+                    </h3>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Objetivo
+                            </label>
+
+                            <select id="tipoMeta">
+
+                                <option>
+                                    Reserva de emergência
+                                </option>
+
+                                <option>
+                                    Comprar um veículo
+                                </option>
+
+                                <option>
+                                    Fazer uma viagem
+                                </option>
+
+                                <option>
+                                    Comprar uma casa
+                                </option>
+
+                                <option>
+                                    Abrir um negócio
+                                </option>
+
+                                <option>
+                                    Outro objetivo
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Valor da meta (R$)
+                            </label>
+
+                            <input
+                                type="number"
+                                id="valorMeta"
+                                placeholder="Ex: 10000"
+                                min="0"
+                                step="0.01"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Prazo
+                            </label>
+
+                            <select id="prazoMeta">
+
+                                <option value="12">
+                                    1 ano
+                                </option>
+
+                                <option value="24">
+                                    2 anos
+                                </option>
+
+                                <option value="36">
+                                    3 anos
+                                </option>
+
+                                <option value="60">
+                                    5 anos
+                                </option>
+
+                                <option value="120">
+                                    10 anos
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="btn calculate-btn"
+                        onclick="calcularMeta()"
+                    >
+                        Calcular minha meta
+                    </button>
+
+
+                    <div
+                        class="result"
+                        id="resultadoMeta"
+                    >
+
+                        <h3>
+                            Planejamento da meta
+                        </h3>
+
+                        <div class="result-grid">
+
+                            <div class="result-item">
+
+                                <span>
+                                    Meta
+                                </span>
+
+                                <strong id="metaFinal">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="result-item">
+
+                                <span>
+                                    Aporte sem rendimento
+                                </span>
+
+                                <strong id="aporteSemJuros">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="result-item">
+
+                                <span>
+                                    Aporte estimado com rendimento
+                                </span>
+
+                                <strong
+                                    id="aporteComJuros"
+                                    class="positive"
+                                >
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <footer>
+            BetShift © 2026 - Projeto Integrador - Ciências Contábeis<br>
+            <small>Dados tributários e regulatórios revisados em 08/10/2026. As taxas de exemplo
+            dos produtos prefixados devem ser substituídas pela taxa efetivamente contratada.</small>
+        </footer>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+        /* =========================
+           FUNÇÕES DE LOGIN
+        ========================= */
+
+        function mostrarCadastro() {
+
+            document.getElementById("loginForm").style.display = "none";
+
+            document.getElementById("cadastroForm").style.display = "block";
+
+            document.getElementById("loginMessage").innerText = "";
+
+        }
+
+
+        function mostrarLogin() {
+
+            document.getElementById("cadastroForm").style.display = "none";
+
+            document.getElementById("loginForm").style.display = "block";
+
+            document.getElementById("cadastroMessage").innerText = "";
+
+        }
+
+
+        function fazerCadastro() {
+
+            const nome =
+                document.getElementById("cadastroNome").value.trim();
+
+            const email =
+                document.getElementById("cadastroEmail").value.trim();
+
+            const senha =
+                document.getElementById("cadastroSenha").value;
+
+            const perfil =
+                document.getElementById("cadastroPerfil").value;
+
+            const mensagem =
+                document.getElementById("cadastroMessage");
+
+
+            if (!nome || !email || !senha) {
+
+                mensagem.innerText =
+                    "Preencha todos os campos.";
+
+                return;
+            }
+
+
+            if (senha.length < 4) {
+
+                mensagem.innerText =
+                    "A senha deve possuir pelo menos 4 caracteres.";
+
+                return;
+            }
+
+
+            const usuario = {
+
+                nome: nome,
+
+                email: email,
+
+                senha: senha,
+
+                perfil: perfil
+
+            };
+
+
+            localStorage.setItem(
+                "betshift_usuario",
+                JSON.stringify(usuario)
+            );
+
+
+            mensagem.style.color = "#4bd39a";
+
+            mensagem.innerText =
+                "Cadastro realizado com sucesso!";
+
+
+            setTimeout(function() {
+
+                document.getElementById("loginEmail").value = email;
+
+                document.getElementById("loginSenha").value = senha;
+
+                mostrarLogin();
+
+            }, 800);
+
+        }
+
+
+        function fazerLogin() {
+
+            const email =
+                document.getElementById("loginEmail").value.trim();
+
+            const senha =
+                document.getElementById("loginSenha").value;
+
+            const mensagem =
+                document.getElementById("loginMessage");
+
+
+            const dados =
+                localStorage.getItem("betshift_usuario");
+
+
+            if (!dados) {
+
+                mensagem.innerText =
+                    "Nenhuma conta encontrada. Faça seu cadastro.";
+
+                return;
+            }
+
+
+            const usuario =
+                JSON.parse(dados);
+
+
+            if (
+                email === usuario.email &&
+                senha === usuario.senha
+            ) {
+
+                mensagem.innerText = "";
+
+                entrarNoSistema(usuario);
+
+            } else {
+
+                mensagem.innerText =
+                    "E-mail ou senha incorretos.";
+
+            }
+
+        }
+
+
+        function entrarNoSistema(usuario) {
+
+            document.getElementById("loginScreen").style.display =
+                "none";
+
+            document.getElementById("app").style.display =
+                "block";
+
+
+            document.getElementById("userName").innerText =
+                usuario.nome;
+
+        }
+
+
+        function sair() {
+
+            document.getElementById("app").style.display =
+                "none";
+
+            document.getElementById("loginScreen").style.display =
+                "flex";
+
+
+            document.getElementById("loginEmail").value = "";
+
+            document.getElementById("loginSenha").value = "";
+
+            mostrarLogin();
+
+        }
+
+
+        /* =========================
+           NAVEGAÇÃO
+        ========================= */
+
+        function abrirSecao(id, botao) {
+
+            const secoes =
+                document.querySelectorAll(".section");
+
+            secoes.forEach(function(secao) {
+
+                secao.classList.remove("active");
+
+            });
+
+
+            const secaoSelecionada =
+                document.getElementById(id);
+
+            if (secaoSelecionada) {
+
+                secaoSelecionada.classList.add("active");
+
+            }
+
+
+            const botoes =
+                document.querySelectorAll("nav button");
+
+            botoes.forEach(function(btn) {
+
+                btn.classList.remove("active");
+
+            });
+
+
+            if (botao) {
+
+                botao.classList.add("active");
+
+            } else {
+
+                botoes.forEach(function(btn) {
+
+                    if (
+                        btn.getAttribute("onclick") &&
+                        btn.getAttribute("onclick").includes("'" + id + "'")
+                    ) {
+
+                        btn.classList.add("active");
+
+                    }
+
+                });
+
+            }
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+
+
+        /* =========================
+           FORMATAR MOEDA
+        ========================= */
+
+        function moeda(valor) {
+
+            return valor.toLocaleString(
+                "pt-BR",
+                {
+                    style: "currency",
+                    currency: "BRL"
+                }
+            );
+
+        }
+
+
+        /* =========================
+           SIMULADOR DE APOSTAS
+        ========================= */
+
+        function calcularApostas() {
+
+            const valor =
+                parseFloat(
+                    document.getElementById("valorAposta").value
+                ) || 0;
+
+            const quantidade =
+                parseInt(
+                    document.getElementById("qtdApostas").value
+                ) || 0;
+
+            const meses =
+                parseInt(
+                    document.getElementById("periodoAposta").value
+                );
+
+
+            const mensal =
+                valor * quantidade;
+
+            const total =
+                mensal * meses;
+
+
+            document.getElementById("gastoMensal").innerText =
+                moeda(mensal);
+
+            document.getElementById("gastoTotal").innerText =
+                moeda(total);
+
+
+            document.getElementById("resultadoAposta")
+                .classList.add("show");
+
+        }
+
+
+        /* =========================
+           SIMULADOR DE INVESTIMENTOS
+        ========================= */
+
+        const dadosFixa = {
+            cdb: { nome: "CDB Prefixado", taxa: 0.12, ir: true, info: "<strong>CDB Prefixado:</strong> exemplo de taxa contratada de 12% ao ano. Para pessoa física, o IR sobre o rendimento segue a tabela regressiva: 22,5% até 180 dias; 20% de 181 a 360; 17,5% de 361 a 720; e 15% acima de 720 dias. CDB elegível pode contar com cobertura do FGC, dentro dos limites aplicáveis." },
+            lci: { nome: "LCI / LCA Prefixada", taxa: 0.105, ir: false, info: "<strong>LCI / LCA Prefixada:</strong> exemplo de taxa contratada de 10,5% ao ano. Para pessoa física, a simulação considera os rendimentos como isentos de IR, conforme as regras aplicáveis. LCI/LCA elegível pode contar com cobertura do FGC dentro dos limites aplicáveis." },
+            tesouro: { nome: "Tesouro Prefixado", taxa: 0.12, ir: true, info: "<strong>Tesouro Prefixado:</strong> exemplo de taxa contratada de 12% ao ano. O IR segue a tabela regressiva da renda fixa e pode haver IOF em resgates nos primeiros 29 dias. A venda antes do vencimento pode sofrer oscilação de preço." }
+        };
+
+        const dadosVariavel = {
+            fii: { nome: "Fundos Imobiliários", cenarios: { pessimista: -0.15, base: 0.08, otimista: 0.12 }, info: "<strong>FIIs:</strong> as cotas oscilam e não existe rendimento mensal garantido. Este simulador usa cenários anuais ilustrativos para mostrar que o resultado pode ficar abaixo ou acima do total aportado." },
+            acoes: { nome: "Ações", cenarios: { pessimista: -0.20, base: 0.10, otimista: 0.20 }, info: "<strong>Ações:</strong> o preço pode subir ou cair conforme empresa, economia, juros e expectativas do mercado. Os cenários são hipóteses educativas, não previsão de mercado." },
+            bitcoin: { nome: "Bitcoin", cenarios: { pessimista: -0.50, base: 0.15, otimista: 0.60 }, info: "<strong>Bitcoin:</strong> possui elevada volatilidade. Uma queda forte pode fazer o valor da carteira ficar abaixo do capital aportado. Os cenários servem exclusivamente para demonstrar essa imprevisibilidade." }
+        };
+
+        function impostoRendaPorPrazo(rendimento, meses) {
+            if (rendimento <= 0) return 0;
+            let aliquota = 0.225;
+            if (meses > 24) aliquota = 0.15;
+            else if (meses > 12) aliquota = 0.175;
+            else if (meses > 6) aliquota = 0.20;
+            return rendimento * aliquota;
+        }
+
+        function atualizarFixa() {
+            const tipo = document.getElementById("tipoFixa").value;
+            document.getElementById("infoFixa").innerHTML = dadosFixa[tipo].info;
+        }
+
+        function calcularRendaFixa() {
+            const aporte = parseFloat(document.getElementById("aporteFixa").value) || 0;
+            const meses = parseInt(document.getElementById("periodoFixa").value);
+            const dados = dadosFixa[document.getElementById("tipoFixa").value];
+            const total = aporte * meses;
+            const taxaMensal = Math.pow(1 + dados.taxa, 1 / 12) - 1;
+            let bruto = 0, impostos = 0;
+
+            for (let i = 0; i < meses; i++) {
+                const tempo = meses - i;
+                const valor = aporte * Math.pow(1 + taxaMensal, tempo);
+                bruto += valor;
+                if (dados.ir) impostos += impostoRendaPorPrazo(valor - aporte, tempo);
+            }
+
+            const liquido = bruto - impostos;
+            const resultado = liquido - total;
+            document.getElementById("fixaInvestido").innerText = moeda(total);
+            document.getElementById("fixaBruto").innerText = moeda(bruto);
+            document.getElementById("fixaImpostos").innerText = moeda(impostos);
+            document.getElementById("fixaLiquido").innerText = moeda(liquido);
+            const el = document.getElementById("fixaResultado");
+            el.innerText = moeda(resultado);
+            el.classList.toggle("positive", resultado >= 0);
+            el.classList.toggle("negative", resultado < 0);
+            document.getElementById("avisoFixa").innerHTML = "ℹ️ Esta é uma projeção baseada na taxa contratada de exemplo. Renda fixa oferece maior previsibilidade, mas não significa ausência de risco. Confira sempre taxa, prazo, liquidez, emissor, cobertura do FGC e condições de resgate do produto real.";
+            document.getElementById("resultadoFixa").classList.add("show");
+        }
+
+        function atualizarVariavel() {
+            const tipo = document.getElementById("tipoVariavel").value;
+            document.getElementById("infoVariavel").innerHTML = dadosVariavel[tipo].info;
+        }
+
+        function calcularRendaVariavel() {
+            const aporte = parseFloat(document.getElementById("aporteVariavel").value) || 0;
+            const meses = parseInt(document.getElementById("periodoVariavel").value);
+            const tipo = document.getElementById("tipoVariavel").value;
+            const cenario = document.getElementById("cenarioVariavel").value;
+            const taxaAnual = dadosVariavel[tipo].cenarios[cenario];
+            const taxaMensal = Math.pow(1 + taxaAnual, 1 / 12) - 1;
+            const total = aporte * meses;
+            let valor = 0;
+
+            for (let i = 0; i < meses; i++) {
+                valor += aporte * Math.pow(1 + taxaMensal, meses - i);
+            }
+
+            const resultado = valor - total;
+            document.getElementById("variavelInvestido").innerText = moeda(total);
+            document.getElementById("variavelValor").innerText = moeda(valor);
+            const el = document.getElementById("variavelResultado");
+            el.innerText = moeda(resultado);
+            el.classList.toggle("positive", resultado >= 0);
+            el.classList.toggle("negative", resultado < 0);
+
+            const aviso = document.getElementById("avisoVariavel");
+            if (resultado < 0) {
+                aviso.innerHTML = "⚠️ Neste cenário, o valor projetado ficou abaixo do total aportado. É justamente o risco da renda variável: o capital pode sofrer perdas e não há garantia de recuperação no prazo escolhido.";
+            } else {
+                aviso.innerHTML = "⚠️ Resultado positivo não significa garantia. Um cenário otimista ou base pode ser diferente da realidade, e perdas maiores podem ocorrer. Use a simulação para entender risco, não para prever o mercado.";
+            }
+            document.getElementById("resultadoVariavel").classList.add("show");
+        }
+
+        /* =========================
+           COMPARADOR
+        ========================= */
+
+        function comparar() {
+
+            const valor =
+                parseFloat(
+                    document.getElementById("valorComparacao").value
+                ) || 0;
+
+            const meses =
+                parseInt(
+                    document.getElementById("periodoComparacao").value
+                );
+
+            const taxa =
+                parseFloat(
+                    document.getElementById("tipoComparacao").value
+                );
+
+
+            const totalApostas =
+                valor * meses;
+
+
+            let investimento =
+                0;
+
+
+            for (
+                let i = 0;
+                i < meses;
+                i++
+            ) {
+
+                investimento =
+                    investimento * (1 + taxa) + valor;
+
+            }
+
+
+            const diferenca =
+                investimento - totalApostas;
+
+
+            document.getElementById(
+                "totalApostasComparacao"
+            ).innerText =
+                moeda(totalApostas);
+
+
+            document.getElementById(
+                "totalInvestimentoComparacao"
+            ).innerText =
+                moeda(investimento);
+
+
+            document.getElementById(
+                "diferencaComparacao"
+            ).innerText =
+                moeda(diferenca);
+
+
+            document.getElementById(
+                "resultadoComparacao"
+            ).classList.add("show");
+
+        }
+
+
+        /* =========================
+           METAS FINANCEIRAS
+        ========================= */
+
+        function calcularMeta() {
+
+            const meta =
+                parseFloat(
+                    document.getElementById("valorMeta").value
+                ) || 0;
+
+            const meses =
+                parseInt(
+                    document.getElementById("prazoMeta").value
+                );
+
+
+            const aporteSemJuros =
+                meta / meses;
+
+
+            /*
+                Taxa ilustrativa de 0,8% ao mês.
+                Utilizada apenas para fins educativos.
+            */
+
+            const taxa = 0.008;
+
+
+            const fator =
+                ((Math.pow(1 + taxa, meses) - 1) / taxa);
+
+
+            const aporteComJuros =
+                meta / fator;
+
+
+            document.getElementById("metaFinal").innerText =
+                moeda(meta);
+
+
+            document.getElementById("aporteSemJuros").innerText =
+                moeda(aporteSemJuros);
+
+
+            document.getElementById("aporteComJuros").innerText =
+                moeda(aporteComJuros);
+
+
+            document.getElementById("resultadoMeta")
+                .classList.add("show");
+
+        }
+
+
+        atualizarFixa();
+        atualizarVariavel();
+
+        /* =========================
+           VERIFICAR LOGIN SALVO
+        ========================= */
+
+        window.addEventListener(
+            "load",
+            function() {
+
+                const dados =
+                    localStorage.getItem("betshift_usuario");
+
+
+                if (dados) {
+
+                    const usuario =
+                        JSON.parse(dados);
+
+                    entrarNoSistema(usuario);
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
